@@ -2,7 +2,7 @@ import os
 from decouple import config, Csv
 from pathlib import Path
 
-APP_VERSION = "1.1.2"
+APP_VERSION = "2.0.0"
 APP_AUTHOR = "Cosme Alves"
 APP_DATE = "2024-10-07"
 APP_EMAIL = "cosme.alex@gmail.com"
