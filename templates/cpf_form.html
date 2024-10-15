@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Validação de CPF - Projeto Desenvolve{% endblock %}
+
+{% block content %}
+<main class="container my-5">
+    <div class="card p-4 cpf-validation mx-auto" style="max-width: 400px;">
+        <h2 class="card-title text-center mb-4">Validação de CPF</h2>
+        <form method="post" action="#">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="cpf" class="form-control" placeholder="000.000.000-00" required>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary w-100">Enviar</button>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inserir Dados - Mérito Acadêmico{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center" style="margin-top: 10px;">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-4">
+                <h1 class="mb-4 text-center">Inserir Dados para Mérito Acadêmico</h1>
+
+                <form method="POST" action="{% url 'merito_academico_input' %}">
+                    {% csrf_token %}
+                    <!-- Campos do formulário -->
+                    <div class="mb-3">
+                        <label for="nome_aluno" class="form-label">Nome do Aluno:</label>
+                        <input type="text" class="form-control" name="nome_aluno" placeholder="Digite o nome do aluno">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nome_diretor" class="form-label">Nome do Diretor:</label>
+                        <input type="text" class="form-control" name="nome_diretor" placeholder="Digite o nome do diretor">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nome_escola" class="form-label">Nome da Escola:</label>
+                        <input type="text" class="form-control" name="nome_escola" placeholder="Digite o nome da escola">
+                    </div>
+                    <div class="mb-3">
+                        <label for="endereco_escola" class="form-label">Endereço Completo da Escola:</label>
+                        <input type="text" class="form-control" name="endereco_escola" placeholder="Digite o endereço completo da escola">
+                    </div>
+                    <div class="mb-3">
+                        <label for="data" class="form-label">Data:</label>
+                        <input type="date" class="form-control" name="data">
+                    </div>
+                    <div class="mb-3">
+                        <label for="media_ensino_medio" class="form-label">Média do Ensino Médio:</label>
+                        <input type="text" class="form-control" name="media_ensino_medio" placeholder="Digite a média final">
+                    </div>
+                    <button type="submit" class="btn btn-purple w-100">Enviar</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

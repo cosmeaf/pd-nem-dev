@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmação dos Dados{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Confirme os dados inseridos</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-4">
+                <form method="POST" action="{% url 'merito_academico_confirm' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <p><strong>Aluno:</strong> {{ nome_aluno }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <p><strong>Diretor:</strong> {{ nome_diretor }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <p><strong>Escola:</strong> {{ nome_escola }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <p><strong>Data:</strong> {{ data }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <p><strong>Média do Ensino Médio:</strong> {{ media_ensino_medio }}</p>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" name="confirmacao" value="sim" class="btn btn-success w-45">Confirmar</button>
+                        <button type="submit" name="confirmacao" value="nao" class="btn btn-danger w-45">Revisar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

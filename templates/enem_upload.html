@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Upload do Arquivo do ENEM - Projeto Desenvolve{% endblock %}
+
+{% block content %}
+<main class="container my-5">
+    <div class="card p-4 mx-auto" style="max-width: 600px;">
+        <h2 class="card-title text-center mb-4">Upload do Arquivo do ENEM</h2>
+        <p class="text-muted text-center">Por favor, faça upload do arquivo original baixado no site oficial do ENEM.</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="pdf_file">Escolher arquivo:</label>
+                <input type="file" id="pdf_file" name="pdf_file" class="form-control-file" required>
+                <small id="fileHelp" class="form-text text-muted">Nenhum arquivo selecionado</small>
+            </div>
+            <div class="form-group text-center mt-3">
+                <button type="submit" class="btn btn-primary w-100">Enviar Arquivo</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script>
+    // Script para personalizar o botão de seleção de arquivo e o texto de ajuda
+    document.addEventListener("DOMContentLoaded", function () {
+        const fileInput = document.getElementById('pdf_file');
+        const fileHelp = document.getElementById('fileHelp');
+        
+        // Atualiza o texto quando o arquivo é selecionado
+        fileInput.addEventListener('change', function () {
+            const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : 'Nenhum arquivo selecionado';
+            fileHelp.textContent = fileName;
+        });
+
+        // Define o texto inicial como "Nenhum arquivo selecionado"
+        fileHelp.textContent = 'Nenhum arquivo selecionado';
+    });
+</script>
+{% endblock %}

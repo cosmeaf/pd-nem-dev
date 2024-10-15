@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Resultado ENEM - Projeto Desenvolve{% endblock %}
+
+{% block content %}
+<main class="container my-5">
+    <div class="card result-card shadow-sm p-4 mx-auto" style="max-width: 800px;">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Resultado do ENEM</h2>
+            <p class="text-muted text-center">Os dados estão corretos? Se sim, confirme o envio, ou entre em contato com o suporte.</p>
+            <form method="post" action="{% url 'confirm_send' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" value="{{ nome }}" class="form-control form-control-sm" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" value="{{ cpf_extraido }}" class="form-control form-control-sm" readonly>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="nota-matematica">Nota de Matemática:</label>
+                        <input type="text" id="nota-matematica" value="{{ nota_matematica }}" class="form-control form-control-sm" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="nota-redacao">Nota de Redação:</label>
+                        <input type="text" id="nota-redacao" value="{{ nota_redacao }}" class="form-control form-control-sm" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="nota-geral">Nota Geral:</label>
+                        <input type="text" id="nota-geral" value="{{ nota_geral }}" class="form-control form-control-sm" readonly>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'cpf_view' %}" class="btn btn-primary btn-sm">Começar Novamente</a>
+                    <button type="submit" class="btn btn-primary btn-sm">Confirmar e Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}

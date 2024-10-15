@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- Adicionando o link para o Font Awesome na versão 5.15.4 no <head> -->
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}
+
+{% block title %}{{ title }} - Projeto Desenvolve{% endblock %}
+
+{% block content %}
+<main class="container my-5">
+    <div class="card message-container p-4 mx-auto shadow-sm" style="max-width: 600px;">
+        <div class="card-body text-center">
+            <div class="message-icon mb-3">
+                {% if message_type == 'message-success' %}
+                    <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                {% elif message_type == 'message-error' %}
+                    <i class="fas fa-times-circle" style="color: #dc3545;"></i>
+                {% elif message_type == 'message-info' %}
+                    <i class="fas fa-info-circle" style="color: #17a2b8;"></i>
+                {% elif message_type == 'message-warning' %}
+                    <i class="fas fa-exclamation-circle" style="color: #ffc107;"></i>
+                {% elif message_type == 'message-alert' %}
+                    <i class="fas fa-bell" style="color: #343a40;"></i>
+                {% endif %}
+            </div>
+            <h2 class="card-title">{{ title }}</h2>
+            <p class="text-muted">{{ message }}</p>
+            <a href="{% url 'cpf_view' %}" class="btn btn-primary mt-4">Voltar para o início</a>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Exibir a mensagem com animação
+    document.addEventListener("DOMContentLoaded", function() {
+        const messageContainer = document.querySelector(".message-container");
+        if (messageContainer) {
+            setTimeout(function() {
+                messageContainer.classList.add("show");
+            }, 100); // Pequeno atraso para animação suave
+        }
+    });
+
+    // Função para fechar a mensagem
+    function closeMessage() {
+        const messageContainer = document.querySelector(".message-container");
+        if (messageContainer) {
+            messageContainer.classList.remove("show");
+            setTimeout(function() {
+                messageContainer.style.display = "none";
+            }, 300); // Tempo para a animação de saída
+        }
+    }
+</script>
+{% endblock %}

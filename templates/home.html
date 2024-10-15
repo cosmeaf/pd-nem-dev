@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home - Projeto Desenvolve
+{% endblock %}
+
+{% block content %}
+    <!-- Main Content -->
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Projeto Desenvolve</h1>
+                <p>Navegue entre as páginas disponíveis:</p>
+                <div class="hero-buttons">
+                    <a href="{% url 'form_cpf' %}" class="btn-page">Página CPF</a>
+                    <a href="{% url 'enem_upload' %}" class="btn-page">Upload Enem</a>
+                    <a href="{% url 'result_enem' %}" class="btn-page">Resultado ENEM</a>
+                    <a href="{% url 'success' %}" class="btn-page">Página de Sucesso</a>
+                    <a href="{% url 'error' %}" class="btn-page">Página de Erro</a>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

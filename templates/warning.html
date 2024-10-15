@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} - Projeto Desenvolve{% endblock %}
+
+{% block content %}
+<main class="container my-5">
+    <div class="card message-card text-center shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+            <div class="message-icon mb-3">
+                {% if title == "Sucesso" %}
+                    <i class="fas fa-check-circle" style="font-size: 48px; color: #28a745;"></i>
+                {% elif title == "Erro" %}
+                    <i class="fas fa-exclamation-circle" style="font-size: 48px; color: #dc3545;"></i>
+                {% elif title == "Atenção" %}
+                    <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #ffc107;"></i>
+                {% elif title == "Alerta" %}
+                    <i class="fas fa-bell" style="font-size: 48px; color: #17a2b8;"></i>
+                {% endif %}
+            </div>
+            <h2 class="card-title">{{ title }}</h2>
+            <p class="text-muted">{{ message }}</p>
+            <a href="{% url 'cpf_view' %}" class="btn btn-primary btn-block mt-4">Voltar para o início</a>
+        </div>
+    </div>
+</main>
+{% endblock %}
