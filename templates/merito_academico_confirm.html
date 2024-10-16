@@ -9,27 +9,23 @@
         <h2 class="card-title text-center mb-4 text-primary">Confirme os dados inseridos</h2>
         <form method="POST" action="{% url 'merito_academico_confirm' %}">
             {% csrf_token %}
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p class="mb-1"><strong>Aluno:</strong> <span class="text-muted">{{ nome_aluno }}</span></p>
-                </div>
-                <div class="col-md-6">
-                    <p class="mb-1"><strong>Diretor:</strong> <span class="text-muted">{{ nome_diretor }}</span></p>
-                </div>
+            <div class="mb-3">
+                <p class="mb-1"><strong>Nome Aluno:</strong> <span class="text-muted">{{ nome_aluno }}</span></p>
+            </div>
+            <div class="mb-3">
+                <p class="mb-1"><strong>Nome Diretor:</strong> <span class="text-muted">{{ nome_diretor }}</span></p>
+            </div>
+            <hr>
+            <div class="mb-3">
+                <p class="mb-1"><strong>Nome Instituição:</strong> <span class="text-muted">{{ nome_escola }}</span></p>
+            </div>
+            <div class="mb-3">
+                <p class="mb-1"><strong>Endereço:</strong> <span class="text-muted">{{ endereco_escola }}</span></p>
             </div>
             <hr>
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <p class="mb-1"><strong>Escola:</strong> <span class="text-muted">{{ nome_escola }}</span></p>
-                </div>
-                <div class="col-md-6">
-                    <p class="mb-1"><strong>Endereço da Escola:</strong> <span class="text-muted">{{ endereco_escola }}</span></p>
-                </div>
-            </div>
-            <hr>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p class="mb-1"><strong>Data:</strong> <span class="text-muted">{{ data }}</span></p>
+                    <p class="mb-1"><strong>Data emissão contrato:</strong> <span class="text-muted">{{ data }}</span></p>
                 </div>
                 <div class="col-md-6">
                     <p class="mb-1"><strong>Média do Ensino Médio:</strong> <span class="text-muted">{{ media_ensino_medio }}</span></p>

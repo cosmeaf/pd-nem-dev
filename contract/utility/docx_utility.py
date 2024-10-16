@@ -23,11 +23,17 @@ def manipular_docx(nome_aluno, nome_diretor, nome_escola, endereco_escola, data,
     # Carregar o template do documento
     doc = Document(template_path)
 
-    # Formatar a data no formato DD/MM/YYYY
+    # Formatar a data para o formato DD/MM/YYYY
     try:
-        data_formatada = datetime.strptime(data, '%d/%m/%Y').strftime('%d/%m/%Y')
+        # Tentar converter a data no formato 'YYYY-MM-DD' para 'DD/MM/YYYY'
+        data_formatada = datetime.strptime(data, '%Y-%m-%d').strftime('%d/%m/%Y')
     except ValueError:
-        data_formatada = data  # Caso a data já esteja no formato desejado
+        try:
+            # Caso já esteja no formato 'DD/MM/YYYY', deixar como está
+            data_formatada = datetime.strptime(data, '%d/%m/%Y').strftime('%d/%m/%Y')
+        except ValueError:
+            # Caso não consiga converter, usar a data original
+            data_formatada = data
 
     # Formatar a nota para duas casas decimais
     media_formatada = f"{float(media):.2f}"

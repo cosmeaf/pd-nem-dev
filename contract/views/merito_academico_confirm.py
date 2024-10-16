@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from contract.utility.docx_utility import manipular_docx
 from decouple import config
 from contract.views.messages_view import render_message
+from datetime import datetime
 
 API_BASE_URL = config('API_BASE_URL')
 API_KEY = config('API_KEY')
@@ -22,9 +23,15 @@ def merito_academico_confirm(request):
             data = request.session.get('data')
             media_ensino_medio = request.session.get('media_ensino_medio')
 
+            # Formatar a data para o formato DD/MM/YYYY
+            try:
+                data_formatada = datetime.strptime(data, '%Y-%m-%d').strftime('%d/%m/%Y')
+            except ValueError:
+                data_formatada = data  # Usar a data original se não estiver no formato esperado
+
             # Manipular o DOCX e gerar o arquivo PDF
             try:
-                pdf_path = manipular_docx(nome_aluno, nome_diretor, nome_escola, endereco_escola, data, media_ensino_medio)
+                pdf_path = manipular_docx(nome_aluno, nome_diretor, nome_escola, endereco_escola, data_formatada, media_ensino_medio)
                 pdf_url = f'/media/documents/{os.path.basename(pdf_path)}'
             except FileNotFoundError as e:
                 return render_message(request, 'error', title='Arquivo Não Encontrado', message=str(e))
