@@ -1,9 +1,10 @@
 import os
+import subprocess
 import requests
 from django.shortcuts import render, redirect
 from contract.utility.docx_utility import manipular_docx
 from decouple import config
-from contract.views.messages_view import confirm_error_view, confirm_success_view
+from contract.views.messages_view import render_message
 
 API_BASE_URL = config('API_BASE_URL')
 API_KEY = config('API_KEY')
@@ -17,15 +18,18 @@ def merito_academico_confirm(request):
             nome_aluno = request.session.get('nome_aluno')
             nome_diretor = request.session.get('nome_diretor')
             nome_escola = request.session.get('nome_escola')
-            endereco_escola = request.session.get('endereco_escola') 
+            endereco_escola = request.session.get('endereco_escola')
             data = request.session.get('data')
             media_ensino_medio = request.session.get('media_ensino_medio')
 
             # Manipular o DOCX e gerar o arquivo PDF
-            pdf_path = manipular_docx(nome_aluno, nome_diretor, nome_escola, endereco_escola, data, media_ensino_medio)
-
-            # Obter o caminho da URL pública do arquivo gerado
-            pdf_url = f'/media/documents/{os.path.basename(pdf_path)}'
+            try:
+                pdf_path = manipular_docx(nome_aluno, nome_diretor, nome_escola, endereco_escola, data, media_ensino_medio)
+                pdf_url = f'/media/documents/{os.path.basename(pdf_path)}'
+            except FileNotFoundError as e:
+                return render_message(request, 'error', title='Arquivo Não Encontrado', message=str(e))
+            except subprocess.CalledProcessError:
+                return render_message(request, 'error', title='Erro na Conversão', message='Erro ao converter o documento para PDF.')
 
             # Obter o user_id salvo na sessão
             user_id = request.session.get('user_id')
@@ -41,15 +45,13 @@ def merito_academico_confirm(request):
             try:
                 response_method = requests.patch(url_method, headers=headers, json=body)
                 response_method.raise_for_status()
-
-                # Se o envio for bem-sucedido, exibir o PDF gerado
+                # Exibir o PDF gerado
                 return render(request, 'merito_academico_view_doc.html', {
                     'pdf_url': pdf_url,
                     'nome_aluno': nome_aluno
                 })
             except requests.exceptions.RequestException as e:
-                # Redirecionar para a página de erro
-                return confirm_error_view(request, message=f"Erro ao enviar dados: {str(e)}")
+                return render_message(request, 'error', title='Erro na API', message=f"Erro ao enviar dados: {str(e)}")
 
         else:
             return redirect('merito_academico_input')

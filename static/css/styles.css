@@ -54,8 +54,21 @@ main {
 
 /* Footer */
 .site-footer {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   width: 100%;
+}
+
+.site-footer h5 {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.footer-social-media a {
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer-social-media a:hover {
+  color: var(--primary-color); /* Use uma cor de destaque */
 }
 
 /* Navbar */

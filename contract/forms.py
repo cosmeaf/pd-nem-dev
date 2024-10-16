@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from contract.utility.cpf_validate import CPFValidator
+from datetime import date
 import logging
 
 logger = logging.getLogger('django')
@@ -66,36 +67,71 @@ class MeritoAcademicoForm(forms.Form):
     nome_aluno = forms.CharField(
         label='Nome do Aluno', 
         max_length=100,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite o nome do aluno'})
+        widget=forms.TextInput(attrs={
+            'class': 'form-control form-control-sm', 
+            'placeholder': 'Digite o nome do aluno'
+        })
     )
     nome_diretor = forms.CharField(
         label='Nome do Diretor', 
         max_length=100,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite o nome do diretor'})
+        widget=forms.TextInput(attrs={
+            'class': 'form-control form-control-sm', 
+            'placeholder': 'Digite o nome do diretor'
+        })
     )
     nome_escola = forms.CharField(
         label='Nome da Escola', 
         max_length=100,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite o nome da escola'})
+        widget=forms.TextInput(attrs={
+            'class': 'form-control form-control-sm', 
+            'placeholder': 'Digite o nome da escola'
+        })
     )
-    
+    cep = forms.CharField(
+        label='CEP', 
+        max_length=9,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control form-control-sm', 
+            'placeholder': 'Digite o CEP',
+            'onblur': 'pesquisarCep(this.value);'
+        })
+    )
     endereco_escola = forms.CharField(
         label='Endereço Completo da Escola', 
         max_length=255,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite o endereço completo da escola'})
+        widget=forms.TextInput(attrs={
+            'class': 'form-control form-control-sm', 
+            'placeholder': 'Digite o endereço completo da escola'
+        })
     )
-
     data = forms.DateField(
         label='Data',
         widget=forms.TextInput(attrs={
-            'class': 'form-control datepicker',
-            'placeholder': 'Selecione a data'
+            'class': 'form-control form-control-sm', 
+            'placeholder': 'Selecione a data', 
+            'type': 'date'
         })
     )
-    
     media_ensino_medio = forms.DecimalField(
         label='Média do Ensino Médio',
-        max_digits=5, 
+        max_digits=4, 
         decimal_places=2,
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Digite a média final'})
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control form-control-sm', 
+            'placeholder': 'Digite a média final'
+        })
     )
+
+    def clean_data(self):
+        data = self.cleaned_data.get('data')
+        if data >= date.today():
+            raise forms.ValidationError("A data deve ser anterior à data atual.")
+        # Formatar a data para DD/MM/YYYY
+        return data.strftime('%d/%m/%Y')
+
+    def clean_media_ensino_medio(self):
+        media = self.cleaned_data.get('media_ensino_medio')
+        if media < 0 or media > 10:
+            raise forms.ValidationError("A média deve ser entre 0.00 e 10.00.")
+        return media

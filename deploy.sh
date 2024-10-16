@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Defina a versão dinamicamente
-VERSION_TAG="2.0.0"
+VERSION_TAG="3.0.1"
 
 # Caminho para o arquivo settings.py
 SETTINGS_FILE="/opt/pd-enem-dev/core/settings.py"
@@ -35,6 +35,41 @@ if [ "$(docker ps -a | grep pd-enem)" ]; then
 else
     echo "Nenhum container antigo encontrado"
 fi
+
+# Verifica se a rede app-network existe, caso contrário, cria uma nova
+echo "Verificando se a rede app-network existe"
+if [ -z "$(docker network ls | grep app-network)" ]; then
+    echo "Criando a rede app-network"
+    docker network create --subnet=172.16.0.0/16 app-network || { echo "Erro ao criar a rede"; exit 1; }
+else
+    echo "Rede app-network já existe"
+fi
+
+# Verifica se o container do Celery existe e o remove, se necessário
+echo "Verificando se existe um container Celery antigo"
+if [ "$(docker ps -a | grep celery)" ]; then
+    echo "Parando e removendo container Celery antigo"
+    docker stop celery
+    docker rm -f celery
+else
+    echo "Nenhum container Celery antigo encontrado"
+fi
+
+# Executa o contêiner do Celery
+echo "Executando o contêiner do Celery"
+docker run -d \
+  --name celery \
+  --hostname celery \
+  --network app-network \
+  --restart always \
+  -e CELERY_BROKER_URL='redis://172.16.0.13:6379/0' \
+  -e CELERY_RESULT_BACKEND='redis://172.16.0.13:6379/0' \
+  -e CELERY_ACCEPT_CONTENT='json' \
+  -e CELERY_TASK_SERIALIZER='json' \
+  -e CELERY_RESULT_SERIALIZER='json' \
+  -e CELERY_TIMEZONE='America/Sao_Paulo' \
+  cosmeaf/pd-enem:$VERSION_TAG \
+  celery -A pd-enem worker --loglevel=info || { echo "Erro ao executar o container Celery"; exit 1; }
 
 # Executar o novo container com a versão atualizada
 echo "Executando novo container com a versão $VERSION_TAG"

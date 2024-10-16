@@ -2,9 +2,9 @@ import os
 from decouple import config, Csv
 from pathlib import Path
 
-APP_VERSION = "2.0.0"
+APP_VERSION = "3.0.1"
 APP_AUTHOR = "Cosme Alves"
-APP_DATE = "2024-10-07"
+APP_DATE = "16/10/2024"
 APP_EMAIL = "cosme.alex@gmail.com"
 APP_DESCRIPTION = "Descrição breve da aplicação"
 
@@ -148,15 +148,13 @@ STATICFILES_FINDERS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# core/settings.py
-
 # Configurações do Celery
-CELERY_BROKER_URL = 'redis://172.16.0.13:6379/0'  # IP do Redis no Docker
+CELERY_BROKER_URL = 'redis://172.16.0.13:6379/0'
 CELERY_RESULT_BACKEND = 'redis://172.16.0.13:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'America/Sao_Paulo'
+CELERY_TIMEZONE = TIME_ZONE
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 

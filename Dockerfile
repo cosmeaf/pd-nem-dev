@@ -36,7 +36,7 @@ COPY . /app/
 # Configuração de variáveis de ambiente para segurança
 ENV DJANGO_ENV=production \
     PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODULE=seu_projeto.settings
+    DJANGO_SETTINGS_MODULE=core.settings
 
 # Criação do diretório de arquivos estáticos e mídia
 RUN mkdir -p /var/www/pd-enem/static /var/www/pd-enem/media
@@ -45,7 +45,7 @@ RUN mkdir -p /var/www/pd-enem/static /var/www/pd-enem/media
 ENV DJANGO_FILE_UPLOAD_MAX_MEMORY_SIZE=5242880
 
 # Executa as migrações, coleta arquivos estáticos e inicia o servidor Gunicorn
-CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn seu_projeto.wsgi:application --bind 0.0.0.0:7000 --workers 3"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn core.wsgi:application --bind 0.0.0.0:7000 --workers 3 & celery -A core worker --loglevel=info & wait"]
 
 # Configurações de rede
 EXPOSE 7000

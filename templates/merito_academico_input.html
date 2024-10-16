@@ -4,44 +4,79 @@
 {% block title %}Inserir Dados - Mérito Acadêmico{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center" style="margin-top: 10px;">
-        <div class="col-md-8">
-            <div class="card shadow-lg p-4">
-                <h1 class="mb-4 text-center">Inserir Dados para Mérito Acadêmico</h1>
-
-                <form method="POST" action="{% url 'merito_academico_input' %}">
-                    {% csrf_token %}
-                    <!-- Campos do formulário -->
-                    <div class="mb-3">
-                        <label for="nome_aluno" class="form-label">Nome do Aluno:</label>
-                        <input type="text" class="form-control" name="nome_aluno" placeholder="Digite o nome do aluno">
-                    </div>
-                    <div class="mb-3">
-                        <label for="nome_diretor" class="form-label">Nome do Diretor:</label>
-                        <input type="text" class="form-control" name="nome_diretor" placeholder="Digite o nome do diretor">
-                    </div>
-                    <div class="mb-3">
-                        <label for="nome_escola" class="form-label">Nome da Escola:</label>
-                        <input type="text" class="form-control" name="nome_escola" placeholder="Digite o nome da escola">
-                    </div>
-                    <div class="mb-3">
-                        <label for="endereco_escola" class="form-label">Endereço Completo da Escola:</label>
-                        <input type="text" class="form-control" name="endereco_escola" placeholder="Digite o endereço completo da escola">
-                    </div>
-                    <div class="mb-3">
-                        <label for="data" class="form-label">Data:</label>
-                        <input type="date" class="form-control" name="data">
-                    </div>
-                    <div class="mb-3">
-                        <label for="media_ensino_medio" class="form-label">Média do Ensino Médio:</label>
-                        <input type="text" class="form-control" name="media_ensino_medio" placeholder="Digite a média final">
-                    </div>
-                    <button type="submit" class="btn btn-purple w-100">Enviar</button>
-                </form>
-                
+<div class="container my-5">
+    <div class="card p-4 mx-auto" style="max-width: 800px;">
+        <h2 class="card-title text-center mb-4">Inserir Dados para Mérito Acadêmico</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    {{ form.nome_aluno.label_tag }}
+                    {{ form.nome_aluno }}
+                    {{ form.nome_aluno.errors }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.nome_diretor.label_tag }}
+                    {{ form.nome_diretor }}
+                    {{ form.nome_diretor.errors }}
+                </div>
             </div>
-        </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    {{ form.nome_escola.label_tag }}
+                    {{ form.nome_escola }}
+                    {{ form.nome_escola.errors }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="cep">CEP:</label>
+                    <input type="text" class="form-control form-control-sm" id="cep" name="cep" placeholder="Digite o CEP" onblur="pesquisarCep(this.value);" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    {{ form.endereco_escola.label_tag }}
+                    {{ form.endereco_escola }}
+                    {{ form.endereco_escola.errors }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    {{ form.data.label_tag }}
+                    {{ form.data }}
+                    {{ form.data.errors }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.media_ensino_medio.label_tag }}
+                    {{ form.media_ensino_medio }}
+                    {{ form.media_ensino_medio.errors }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-4">Enviar</button>
+        </form>
     </div>
 </div>
+
+<!-- Script para buscar endereço pelo CEP -->
+<script>
+    function pesquisarCep(cep) {
+        cep = cep.replace(/\D/g, '');
+        if (cep != "") {
+            var validacep = /^[0-9]{8}$/;
+            if (validacep.test(cep)) {
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!("erro" in data)) {
+                            document.querySelector("input[name='endereco_escola']").value = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
+                        } else {
+                            alert("CEP não encontrado.");
+                        }
+                    })
+                    .catch(error => console.error('Erro ao buscar o CEP:', error));
+            } else {
+                alert("Formato de CEP inválido.");
+            }
+        }
+    }
+</script>
 {% endblock %}
