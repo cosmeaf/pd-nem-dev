@@ -2,6 +2,10 @@ import os
 import tempfile
 import PyPDF2
 import pytesseract
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from contract.models import EnemData
+from contract.serializers import EnemDataSerializer
 from django.shortcuts import render, redirect
 from contract.forms import EnemPDFUploadForm
 from contract.views.messages_view import render_message
@@ -225,3 +229,11 @@ def enem_upload_view(request):
         logger.info("Renderizando formulário de upload do ENEM.")
     
     return render(request, 'enem_upload.html', {'form': form})
+
+
+
+class EnemDataListView(generics.ListAPIView):
+    queryset = EnemData.objects.all()
+    serializer_class = EnemDataSerializer
+    permission_classes = [AllowAny]
+

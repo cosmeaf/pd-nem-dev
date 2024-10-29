@@ -6,6 +6,7 @@ from contract.utility.docx_utility import manipular_docx
 from decouple import config
 from contract.views.messages_view import render_message
 from datetime import datetime
+from contract.models import MeritoAcademico
 
 API_BASE_URL = config('API_BASE_URL')
 API_KEY = config('API_KEY')
@@ -20,23 +21,34 @@ def merito_academico_confirm(request):
             nome_diretor = request.session.get('nome_diretor')
             nome_escola = request.session.get('nome_escola')
             endereco_escola = request.session.get('endereco_escola')
-            data = request.session.get('data')
+            data = request.session.get('data')  # Obter exatamente como está
             media_ensino_medio = request.session.get('media_ensino_medio')
+            cpf = request.session.get('cpf')  # Supondo que o CPF está na sessão
 
-            # Formatar a data para o formato DD/MM/YYYY
-            try:
-                data_formatada = datetime.strptime(data, '%Y-%m-%d').strftime('%d/%m/%Y')
-            except ValueError:
-                data_formatada = data  # Usar a data original se não estiver no formato esperado
+            # Verificar duplicidade de CPF antes de salvar
+            if MeritoAcademico.objects.filter(cpf=cpf).exists():
+                return render_message(request, 'error', title='CPF Duplicado', message='Dados já cadastrados no sistema.')
 
             # Manipular o DOCX e gerar o arquivo PDF
             try:
-                pdf_path = manipular_docx(nome_aluno, nome_diretor, nome_escola, endereco_escola, data_formatada, media_ensino_medio)
+                pdf_path = manipular_docx(nome_aluno, nome_diretor, nome_escola, endereco_escola, data, media_ensino_medio)
                 pdf_url = f'/media/documents/{os.path.basename(pdf_path)}'
             except FileNotFoundError as e:
                 return render_message(request, 'error', title='Arquivo Não Encontrado', message=str(e))
             except subprocess.CalledProcessError:
                 return render_message(request, 'error', title='Erro na Conversão', message='Erro ao converter o documento para PDF.')
+
+            # Salvar os dados na model MeritoAcademico exatamente como estão
+            merito_academico = MeritoAcademico.objects.create(
+                nome_aluno=nome_aluno,
+                nome_diretor=nome_diretor,
+                nome_escola=nome_escola,
+                endereco_escola=endereco_escola,
+                data=data,  # Salvar exatamente como está
+                media_ensino_medio=media_ensino_medio,
+                pdf_url=pdf_url,
+                cpf=cpf
+            )
 
             # Obter o user_id salvo na sessão
             user_id = request.session.get('user_id')

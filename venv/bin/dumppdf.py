@@ -1,4 +1,4 @@
-#!/opt/pd-enem-dev/venv/bin/python3
+#!/opt/pd-enem/venv/bin/python3
 """Extract pdf structure in XML format"""
 import logging
 import os.path

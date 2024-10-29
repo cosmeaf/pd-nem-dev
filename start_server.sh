@@ -5,8 +5,8 @@ CELERY_PID_FILE="/var/run/celery.pid"
 LOG_DIR="/var/log"
 DJANGO_LOG_FILE="$LOG_DIR/django.log"
 CELERY_LOG_FILE="$LOG_DIR/celery.log"
-VENV_PATH="/opt/pd-enem-dev/venv"  # Caminho do ambiente virtual
-APP_DIR="/opt/pd-enem-dev"  # Caminho da aplicação Django
+VENV_PATH="/opt/pd-enem/venv"  # Caminho do ambiente virtual
+APP_DIR="/opt/pd-enem"  # Caminho da aplicação Django
 
 # Função para registrar logs no formato correto
 log_message() {

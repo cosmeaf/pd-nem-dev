@@ -1,3 +1,7 @@
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from contract.models import MeritoAcademico
+from contract.serializers import MeritoAcademicoSerializer
 from django.shortcuts import render, redirect
 from contract.forms import MeritoAcademicoForm
 import logging
@@ -35,3 +39,9 @@ def merito_academico_input(request):
 
     # Renderizar o template com o formulário, exibindo os erros se houverem
     return render(request, 'merito_academico_input.html', {'form': form})
+
+
+class MeritoAcademicoListView(generics.ListAPIView):
+    queryset = MeritoAcademico.objects.all()
+    serializer_class = MeritoAcademicoSerializer
+    permission_classes = [AllowAny]

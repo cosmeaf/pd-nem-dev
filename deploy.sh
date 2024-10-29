@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Defina a versão dinamicamente
-VERSION_TAG="3.0.1"
+VERSION_TAG="3.0.2"
 
 # Caminho para o arquivo settings.py
 SETTINGS_FILE="/opt/pd-enem-dev/core/settings.py"

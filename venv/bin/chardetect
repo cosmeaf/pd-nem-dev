@@ -1,4 +1,4 @@
-#!/opt/pd-enem-dev/venv/bin/python3
+#!/opt/pd-enem/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
