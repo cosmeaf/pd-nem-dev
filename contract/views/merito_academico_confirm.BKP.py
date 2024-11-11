@@ -47,12 +47,8 @@ def merito_academico_confirm(request):
                 data=data,  # Salvar exatamente como está
                 media_ensino_medio=media_ensino_medio,
                 pdf_url=pdf_url,
-                cpf=cpf,
-                cel=request.session.get('cel'),  # Novo campo para celular
-                celResponsavel=request.session.get('cel_responsavel'),  # Novo campo para celular do responsável
-                email=request.session.get('email')  # Novo campo para email
+                cpf=cpf
             )
-
 
             # Obter o user_id salvo na sessão
             user_id = request.session.get('user_id')

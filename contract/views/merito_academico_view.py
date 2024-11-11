@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from contract.models import MeritoAcademico
 from contract.serializers import MeritoAcademicoSerializer
@@ -41,7 +41,7 @@ def merito_academico_input(request):
     return render(request, 'merito_academico_input.html', {'form': form})
 
 
-class MeritoAcademicoListView(generics.ListAPIView):
+class MeritoAcademicoViewSet(viewsets.ModelViewSet):
     queryset = MeritoAcademico.objects.all()
     serializer_class = MeritoAcademicoSerializer
     permission_classes = [AllowAny]

@@ -19,9 +19,6 @@ def confirm_send_view(request):
             # Obter os dados da sessão
             nome = request.session.get('nome')
             cpf = request.session.get('cpf_extraido')
-            cel = request.session.get('cel')
-            cel_responsavel = request.session.get('cel_responsavel')
-            email = request.session.get('email')
             nota_matematica = request.session.get('nota_matematica')
             nota_redacao = request.session.get('nota_redacao')
             nota_geral = request.session.get('nota_geral')
@@ -41,9 +38,6 @@ def confirm_send_view(request):
             enem_data = EnemData.objects.create(
                 nome=nome,
                 cpf=cpf,
-                cel=cel,  # Adicionando o novo campo
-                celResponsavel=cel_responsavel,  # Adicionando o novo campo
-                email=email,  # Adicionando o novo campo
                 nota_matematica=nota_matematica,
                 nota_redacao=nota_redacao,
                 nota_geral=nota_geral

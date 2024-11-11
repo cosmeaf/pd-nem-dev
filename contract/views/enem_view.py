@@ -2,7 +2,7 @@ import os
 import tempfile
 import PyPDF2
 import pytesseract
-from rest_framework import generics
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from contract.models import EnemData
 from contract.serializers import EnemDataSerializer
@@ -232,8 +232,7 @@ def enem_upload_view(request):
 
 
 
-class EnemDataListView(generics.ListAPIView):
+class EnemDataViewSet(viewsets.ModelViewSet):
     queryset = EnemData.objects.all()
     serializer_class = EnemDataSerializer
     permission_classes = [AllowAny]
-

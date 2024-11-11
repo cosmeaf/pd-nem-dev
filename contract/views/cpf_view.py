@@ -2,7 +2,7 @@ import requests
 from django.shortcuts import render, redirect
 from decouple import config
 from contract.forms import CPFForm
-from contract.views.messages_view import render_message 
+from contract.views.messages_view import render_message
 import logging
 
 logger = logging.getLogger('django')
@@ -10,7 +10,6 @@ logger = logging.getLogger('django')
 # Carregar variáveis de ambiente com segurança
 API_BASE_URL = config('API_BASE_URL')
 API_KEY = config('API_KEY')
-
 
 def cpf_view(request):
     if request.method == 'POST':
@@ -38,10 +37,13 @@ def cpf_view(request):
                                               message='A resposta da API não contém os dados esperados.',
                                               code=500)
                     
-                    # Salva os dados retornados na sessão
+                    # Salva os dados retornados na sessão, incluindo novos campos
                     request.session['user_id'] = data.get('id')
                     request.session['cpf'] = data.get('cpf')
                     request.session['apply_method'] = data.get('applyMethod')
+                    request.session['cel'] = data.get('cel')  # Novo campo salvo na sessão
+                    request.session['cel_responsavel'] = data.get('celResponsavel')  # Novo campo salvo na sessão
+                    request.session['email'] = data.get('email')  # Novo campo salvo na sessão
 
                     # Redireciona com base no método de aplicação
                     if data.get('applyMethod') == 'Enem':
